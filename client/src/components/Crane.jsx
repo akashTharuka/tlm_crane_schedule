@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { images } from '../javascript/imageImports';
+// import { images } from '../javascript/imageImports';
 
 const Crane = () => {
     return (

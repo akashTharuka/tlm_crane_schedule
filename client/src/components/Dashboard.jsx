@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import Navbar from './Navbar';
-// import axios from 'axios';
+import axios from 'axios';
 
 // import { images } from '../javascript/imageImports.js';
 
@@ -13,18 +13,21 @@ const Dashboard = () => {
 
     const [tableRows, setTableRows] = useState([]);
 
-    const base_url = "http://localhost:4000/";
+    const base_url = "http://localhost:5000/";
 
     useEffect(() => {
         console.log("request sent to " + base_url);
-        // axios.get(base_url)
-        //     .then(res => {
-        //         console.log(res);
-        //         setSchedule(res);
-        //     });
-        // const obj = [[[['C1', 1, 'loading']], [['C2', 4, 'loading'], ['C2', 3, 'loading']]], [[['C1', 1, 'loading']], [['C2', 3, 'loading']]], [[['C1', 1, 'loading'], ['C1', 2, 'loading']], [['C2', 4, 'loading'], ['C2', 2, 'discharging'], ['C2', 4, 'discharging']]], [[['C1', 2, 'loading'], ['C1', 2, 'discharging']], [['C2', 4, 'loading'], ['C2', 4, 'discharging']]]];
-        const obj = [[[['C1', 1, 'L']], [['C2', 4, 'L'], ['C2', 3, 'L']]], [[['C1', 1, 'L']], [['C2', 3, 'L']]], [[['C1', 1, 'L'], ['C1', 2, 'L']], [['C2', 4, 'L'], ['C2', 2, 'D'], ['C2', 4, 'D']]], [[['C1', 2, 'L'], ['C1', 2, 'D']], [['C2', 4, 'L'], ['C2', 4, 'D']]], [[['C1', 1, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 3, 'D']]], [[['C1', 1, 'D']], [['C2', 2, 'D'], ['C2', 3, 'D']]], [[['C1', 3, 'L'], ['C1', 2, 'D']], [['C2', 3, 'D']]], [[['C1', 1, 'L'], ['C1', 3, 'L']], [['C2', 2, 'L'], ['C2', 3, 'D']]], [[['C1', 2, 'L']], [['C2', 4, 'L']]], [[['C1', 1, 'L'], ['C1', 3, 'D']], [['C2', 3, 'L'], ['C2', 4, 'L']]], [[['C1', 2, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 3, 'D']]], [[['C1', 2, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 2, 'D'], ['C2', 3, 'D']]]];
-        setSchedule(obj);
+        axios.get(base_url)
+            .then(res => {
+                console.log(res.data);
+                setSchedule(res.data);
+                console.log("response fetched");
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        // const obj = [[[['C1', 1, 'L']], [['C2', 4, 'L'], ['C2', 3, 'L']]], [[['C1', 1, 'L']], [['C2', 3, 'L']]], [[['C1', 1, 'L'], ['C1', 2, 'L']], [['C2', 4, 'L'], ['C2', 2, 'D'], ['C2', 4, 'D']]], [[['C1', 2, 'L'], ['C1', 2, 'D']], [['C2', 4, 'L'], ['C2', 4, 'D']]], [[['C1', 1, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 3, 'D']]], [[['C1', 1, 'D']], [['C2', 2, 'D'], ['C2', 3, 'D']]], [[['C1', 3, 'L'], ['C1', 2, 'D']], [['C2', 3, 'D']]], [[['C1', 1, 'L'], ['C1', 3, 'L']], [['C2', 2, 'L'], ['C2', 3, 'D']]], [[['C1', 2, 'L']], [['C2', 4, 'L']]], [[['C1', 1, 'L'], ['C1', 3, 'D']], [['C2', 3, 'L'], ['C2', 4, 'L']]], [[['C1', 2, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 3, 'D']]], [[['C1', 2, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 2, 'D'], ['C2', 3, 'D']]]];
+        // setSchedule(obj);
     }, []);
 
     // Returns a Promise that resolves after "ms" Milliseconds
