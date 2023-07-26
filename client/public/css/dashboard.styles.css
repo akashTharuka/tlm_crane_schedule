@@ -29,4 +29,10 @@ body{
     width: 95%;
 }
 
+.loading{
+    color: green;
+}
 
+.discharging{
+    color: orange;
+}
