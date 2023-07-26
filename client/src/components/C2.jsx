@@ -2,7 +2,7 @@ import React from 'react';
 
 const C2 = ({ className }) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className={`c2 ms-2 float-end position-absolute ${className}`}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className={`c2 ms-2 float-end ${className}`}>
             <defs>
                 <style>{".c{fill:#fff}"}</style>
             </defs>
