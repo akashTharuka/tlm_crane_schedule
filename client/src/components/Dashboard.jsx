@@ -8,7 +8,7 @@ const Dashboard = () => {
 
     const [blockArr, setBlockArr] = useState([]);
     const [disabledRun, setDisabledRun] = useState(false);
-    const [schedule, setSchedule] = useState({});
+    const [schedule, setSchedule] = useState();
 
     const base_url = "http://localhost:4000/";
 
@@ -20,7 +20,7 @@ const Dashboard = () => {
         //         setSchedule(res);
         //     });
         const obj = { 1: [[1, 1, 'L'], [2, 4, 'L'], [2, 3, 'L']], 2: [[1, 1, 'L'], [2, 3, 'L']] };
-        setSchedule({...obj});
+        // setSchedule({...obj});
     }, []);
 
     // Returns a Promise that resolves after "ms" Milliseconds
