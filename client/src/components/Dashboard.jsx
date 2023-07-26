@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import Navbar from './Navbar';
 import axios from 'axios';
-
-// import { images } from '../javascript/imageImports.js';
+import C1 from './C1';
+import C2 from './C2';
 
 const Dashboard = () => {
 
@@ -77,7 +77,7 @@ const Dashboard = () => {
             }
 
             setBlockArr([...blocks]);
-            await timer(500);
+            await timer(1000);
 
             let max_length = Math.max(c1_jobs.length, c2_jobs.length);
             // console.log(max_length);
@@ -122,34 +122,41 @@ const Dashboard = () => {
                         </div>
                         <div className="block col position-relative">
                             <div className={`border rounded-3 py-1 px-2 bg-light`}>A1
-                                {/* {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <img src={images.port_crane} alt="" /> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""} */}
-                                {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
-                                {c2_jobs.length > j ? c2_jobs[j][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <C1 className={c1_jobs[j][2]} /> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <C1 className={c1_jobs[c1_jobs.length-1][2]} /> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 1 ? <C2 className={c2_jobs[j][2]} /> : "" : c2_jobs[c2_jobs.length-1][1] === 1 ? <C2 className={c2_jobs[c2_jobs.length-1][2]} /> : ""}
+                                {/* {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""} */}
                             </div>
                         </div>
                         <div className="block col position-relative">
                             <div className={`border rounded-3 py-1 px-2 bg-light`}>A2
-                                {c1_jobs.length > j ? c1_jobs[j][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
-                                {c2_jobs.length > j ? c2_jobs[j][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 2 ? <C1 className={c1_jobs[j][2]} /> : "" : c1_jobs[c1_jobs.length-1][1] === 2 ? <C1 className={c1_jobs[c1_jobs.length-1][2]} /> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 2 ? <C2 className={c2_jobs[j][2]} /> : "" : c2_jobs[c2_jobs.length-1][1] === 2 ? <C2 className={c2_jobs[c2_jobs.length-1][2]} /> : ""}
+                                {/* {c1_jobs.length > j ? c1_jobs[j][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""} */}
                             </div>
                         </div>
                         <div className="block col position-relative">
                             <div className={`border rounded-3 py-1 px-2 bg-light`}>A3
-                                {c1_jobs.length > j ? c1_jobs[j][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
-                                {c2_jobs.length > j ? c2_jobs[j][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 3 ? <C1 className={c1_jobs[j][2]} /> : "" : c1_jobs[c1_jobs.length-1][1] === 3 ? <C1 className={c1_jobs[c1_jobs.length-1][2]} /> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 3 ? <C2 className={c2_jobs[j][2]} /> : "" : c2_jobs[c2_jobs.length-1][1] === 3 ? <C2 className={c2_jobs[c2_jobs.length-1][2]} /> : ""}
+                                {/* {c1_jobs.length > j ? c1_jobs[j][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""} */}
                             </div>
                         </div>
                         <div className="block col position-relative">
                             <div className={`border rounded-3 py-1 px-2 bg-light`}>A4
-                                {c1_jobs.length > j ? c1_jobs[j][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
-                                {c2_jobs.length > j ? c2_jobs[j][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 4 ? <C1 className={c1_jobs[j][2]} /> : "" : c1_jobs[c1_jobs.length-1][1] === 4 ? <C1 className={c1_jobs[c1_jobs.length-1][2]} /> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 4 ? <C2 className={c2_jobs[j][2]} /> : "" : c2_jobs[c2_jobs.length-1][1] === 4 ? <C2 className={c2_jobs[c2_jobs.length-1][2]} /> : ""}
+                                {/* {c1_jobs.length > j ? c1_jobs[j][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""} */}
                             </div>
                         </div>
                     </div>
                 );
 
                 setBlockArr([...blocks]);
-                await timer(500);
+                await timer(1000);
             }
             
         }

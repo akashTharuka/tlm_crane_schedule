@@ -30,11 +30,13 @@ body::-webkit-scrollbar{
 }
 
 .L{
-    color: green;
+    /* color: green; */
+    /* background-color: green; */
+    fill: green;
 }
 
 .D{
-    color: orange;
+    fill: orange;
 }
 
 
