@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
+// import axios from 'axios';
 
-import { images } from '../javascript/imageImports.js';
+// import { images } from '../javascript/imageImports.js';
 
 const Dashboard = () => {
 
     const [blockArr, setBlockArr] = useState([]);
     const [disabledRun, setDisabledRun] = useState(false);
+    const [schedule, setSchedule] = useState({});
+
+    const base_url = "http://localhost:4000/";
+
+    useEffect(() => {
+        console.log("request sent to " + base_url);
+        // axios.get(base_url)
+        //     .then(res => {
+        //         console.log(res);
+        //         setSchedule(res);
+        //     });
+        const obj = { 1: [[1, 1, 'L'], [2, 4, 'L'], [2, 3, 'L']], 2: [[1, 1, 'L'], [2, 3, 'L']] };
+        setSchedule({...obj});
+    }, []);
 
     // Returns a Promise that resolves after "ms" Milliseconds
     const timer = ms => new Promise(res => setTimeout(res, ms));
@@ -49,7 +64,7 @@ const Dashboard = () => {
             </div>
             <div className="row p-0">
                 <div className="col-9 d-flex">
-                    <p className="flex-grow-1 lead my-2">Container Blocks</p>
+                    <p className="flex-grow-1 lead my-2">Container Blocks: {schedule}</p>
                     <button type='button' className="btn btn-outline-dark btn-sm my-2 mx-2">Upload<i className="bi bi-upload ps-2"></i></button>
                     <button type='button' className={`btn btn-outline-success btn-sm my-2 mx-2 ${disabledRun ? "disabled" : ""}`} onClick={handleRun}>Run<i className="bi bi-play ps-2"></i></button>
                 </div>
@@ -60,7 +75,7 @@ const Dashboard = () => {
             </div>
             <div className="row p-0">
                 <div className="col-9 visualizing-section">
-                    {blockArr}
+                    
                 </div>
                 <div className="col-3 table-section">
                     <table className="table table">
