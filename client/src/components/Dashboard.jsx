@@ -11,6 +11,8 @@ const Dashboard = () => {
     const [disabledRun, setDisabledRun] = useState(false);
     const [schedule, setSchedule] = useState([]);
 
+    const [tableRows, setTableRows] = useState([]);
+
     const base_url = "http://localhost:4000/";
 
     useEffect(() => {
@@ -20,7 +22,8 @@ const Dashboard = () => {
         //         console.log(res);
         //         setSchedule(res);
         //     });
-        const obj = [[[['C1', 1, 'loading']], [['C2', 4, 'loading'], ['C2', 3, 'loading']]], [[['C1', 1, 'loading']], [['C2', 3, 'loading']]], [[['C1', 1, 'loading'], ['C1', 2, 'loading']], [['C2', 4, 'loading'], ['C2', 2, 'discharging'], ['C2', 4, 'discharging']]], [[['C1', 2, 'loading'], ['C1', 2, 'discharging']], [['C2', 4, 'loading'], ['C2', 4, 'discharging']]]];
+        // const obj = [[[['C1', 1, 'loading']], [['C2', 4, 'loading'], ['C2', 3, 'loading']]], [[['C1', 1, 'loading']], [['C2', 3, 'loading']]], [[['C1', 1, 'loading'], ['C1', 2, 'loading']], [['C2', 4, 'loading'], ['C2', 2, 'discharging'], ['C2', 4, 'discharging']]], [[['C1', 2, 'loading'], ['C1', 2, 'discharging']], [['C2', 4, 'loading'], ['C2', 4, 'discharging']]]];
+        const obj = [[[['C1', 1, 'L']], [['C2', 4, 'L'], ['C2', 3, 'L']]], [[['C1', 1, 'L']], [['C2', 3, 'L']]], [[['C1', 1, 'L'], ['C1', 2, 'L']], [['C2', 4, 'L'], ['C2', 2, 'D'], ['C2', 4, 'D']]], [[['C1', 2, 'L'], ['C1', 2, 'D']], [['C2', 4, 'L'], ['C2', 4, 'D']]], [[['C1', 1, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 3, 'D']]], [[['C1', 1, 'D']], [['C2', 2, 'D'], ['C2', 3, 'D']]], [[['C1', 3, 'L'], ['C1', 2, 'D']], [['C2', 3, 'D']]], [[['C1', 1, 'L'], ['C1', 3, 'L']], [['C2', 2, 'L'], ['C2', 3, 'D']]], [[['C1', 2, 'L']], [['C2', 4, 'L']]], [[['C1', 1, 'L'], ['C1', 3, 'D']], [['C2', 3, 'L'], ['C2', 4, 'L']]], [[['C1', 2, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 3, 'D']]], [[['C1', 2, 'L'], ['C1', 1, 'D']], [['C2', 3, 'L'], ['C2', 2, 'D'], ['C2', 3, 'D']]]];
         setSchedule(obj);
     }, []);
 
@@ -30,6 +33,7 @@ const Dashboard = () => {
     const handleRun = async () => {
         setDisabledRun(true);
         setBlockArr([]);
+        setTableRows([]);
         let blocks = [];
         // console.log(schedule);
         for (let i=0; i < schedule.length; i++){
@@ -38,6 +42,9 @@ const Dashboard = () => {
             let c1_jobs = job_lists[0];
             let c2_jobs = job_lists[1];
 
+            // let rowSpan = c1_jobs.length + c2_jobs.length;
+
+
             if (i === 0){
                 blocks.push(
                     <div className="container-block-row row gx-2 my-2 text-center align-items-center" key={uuid()}>
@@ -45,16 +52,16 @@ const Dashboard = () => {
                             <div className="py-1 px-2"><strong className='pe-2'>T{time_slot}</strong><i className="bi bi-arrow-right"></i></div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A1</div>
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A1</div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A2</div>
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A2</div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A3</div>
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A3</div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A4</div>
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A4</div>
                         </div>
                     </div>
                 );
@@ -67,12 +74,38 @@ const Dashboard = () => {
             }
 
             setBlockArr([...blocks]);
-            await timer(1000);
+            await timer(500);
 
             let max_length = Math.max(c1_jobs.length, c2_jobs.length);
             // console.log(max_length);
 
             for (let j=0; j < max_length; j++){
+
+                let row = [];
+
+                if (c1_jobs.length > j){
+                    row.push(
+                        <tr className='text-center'>
+                            <td>{"T" + time_slot}</td>
+                            <td>C1</td>
+                            <td>{"A" + c1_jobs[j][1]}</td>
+                            <td>{c1_jobs[j][2] === 'L' ? "Loading" : "Discharging"}</td>
+                        </tr>
+                    );
+                }
+
+                if (c2_jobs.length > j){
+                    row.push(
+                        <tr className='text-center'>
+                            <td>{"T" + time_slot}</td>
+                            <td>C2</td>
+                            <td>{"A" + c2_jobs[j][1]}</td>
+                            <td>{c2_jobs[j][2] === 'L' ? "Loading" : "Discharging"}</td>
+                        </tr>
+                    );
+                }
+
+                setTableRows(tableRows => [...tableRows, ...row]);
                 // console.log("j: " + j);
                 // console.log("c1: " + c1_jobs.length);
                 // console.log("c2: " + c2_jobs.length);
@@ -85,25 +118,26 @@ const Dashboard = () => {
                             <div className="py-1 px-2"><strong className='pe-2'>T{time_slot}</strong><i className="bi bi-arrow-right"></i></div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A1
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A1
+                                {/* {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <img src={images.port_crane} alt="" /> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""} */}
                                 {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
                                 {c2_jobs.length > j ? c2_jobs[j][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
                             </div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A2
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A2
                                 {c1_jobs.length > j ? c1_jobs[j][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
                                 {c2_jobs.length > j ? c2_jobs[j][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
                             </div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A3
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A3
                                 {c1_jobs.length > j ? c1_jobs[j][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
                                 {c2_jobs.length > j ? c2_jobs[j][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
                             </div>
                         </div>
                         <div className="block col position-relative">
-                            <div className={`border rounded-3 py-1 px-2`}>A4
+                            <div className={`border rounded-3 py-1 px-2 bg-light`}>A4
                                 {c1_jobs.length > j ? c1_jobs[j][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
                                 {c2_jobs.length > j ? c2_jobs[j][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
                             </div>
@@ -112,7 +146,7 @@ const Dashboard = () => {
                 );
 
                 setBlockArr([...blocks]);
-                await timer(2000);
+                await timer(500);
             }
             
         }
@@ -140,34 +174,17 @@ const Dashboard = () => {
                     {blockArr}
                 </div>
                 <div className="col-3 table-section">
-                    <table className="table table">
+                    <table className="table table-hover table-striped">
                         <thead>
-                            <tr>
-                                <th scope='col'>Time Slot</th>
+                            <tr className='text-center'>
+                                <th scope='col'>Slot</th>
                                 <th scope='col'>Crane</th>
                                 <th scope='col'>Block</th>
                                 <th scope='col'>L/D</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>T1</td>
-                                <td>C1</td>
-                                <td>A1</td>
-                                <td>L</td>
-                            </tr>
-                            <tr>
-                                <td rowSpan={2}>T2</td>
-                                <td>C1</td>
-                                <td>A1</td>
-                                <td>L</td>
-                            </tr>
-                            <tr>
-                                {/* <td scope='row'>T2</td> */}
-                                <td>C1</td>
-                                <td>A1</td>
-                                <td>L</td>
-                            </tr>
+                            {tableRows}
                         </tbody>
                     </table>
                 </div>

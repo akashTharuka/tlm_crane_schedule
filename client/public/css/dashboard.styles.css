@@ -21,18 +21,27 @@ body{
     overflow-x: hidden; */
 }
 
-/* body::-webkit-scrollbar{
+body::-webkit-scrollbar{
     display: none;
-} */
+}
 
 .dashboard.container-fluid{
     width: 95%;
 }
 
-.loading{
+.L{
     color: green;
 }
 
-.discharging{
+.D{
     color: orange;
+}
+
+
+/* .crane-text{
+    font-size: 0.7em;
+} */
+.c1, .c2{
+    height: 20px;
+    width: 20px;
 }
