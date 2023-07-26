@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import Navbar from './Navbar';
 // import axios from 'axios';
 
@@ -8,7 +9,7 @@ const Dashboard = () => {
 
     const [blockArr, setBlockArr] = useState([]);
     const [disabledRun, setDisabledRun] = useState(false);
-    const [schedule, setSchedule] = useState();
+    const [schedule, setSchedule] = useState([]);
 
     const base_url = "http://localhost:4000/";
 
@@ -19,8 +20,8 @@ const Dashboard = () => {
         //         console.log(res);
         //         setSchedule(res);
         //     });
-        const obj = { 1: [[1, 1, 'L'], [2, 4, 'L'], [2, 3, 'L']], 2: [[1, 1, 'L'], [2, 3, 'L']] };
-        // setSchedule({...obj});
+        const obj = [[[['C1', 1, 'loading']], [['C2', 4, 'loading'], ['C2', 3, 'loading']]], [[['C1', 1, 'loading']], [['C2', 3, 'loading']]], [[['C1', 1, 'loading'], ['C1', 2, 'loading']], [['C2', 4, 'loading'], ['C2', 2, 'discharging'], ['C2', 4, 'discharging']]], [[['C1', 2, 'loading'], ['C1', 2, 'discharging']], [['C2', 4, 'loading'], ['C2', 4, 'discharging']]]];
+        setSchedule(obj);
     }, []);
 
     // Returns a Promise that resolves after "ms" Milliseconds
@@ -29,30 +30,91 @@ const Dashboard = () => {
     const handleRun = async () => {
         setDisabledRun(true);
         setBlockArr([]);
-        // console.log("handling run");
-        for (let i=0; i < 12; i++){
-            let blocks = [];
-            blocks.push(
-                <div className="container-block-row row gx-2 my-2 text-center align-items-center" key={i}>
-                    <div className="time-slot col-1">
-                        <div className="py-1 px-2"><strong className='pe-2'>T1</strong><i className="bi bi-arrow-right"></i></div>
+        let blocks = [];
+        // console.log(schedule);
+        for (let i=0; i < schedule.length; i++){
+            let time_slot = i+1;
+            let job_lists = schedule[i];
+            let c1_jobs = job_lists[0];
+            let c2_jobs = job_lists[1];
+
+            if (i === 0){
+                blocks.push(
+                    <div className="container-block-row row gx-2 my-2 text-center align-items-center" key={uuid()}>
+                        <div className="time-slot col-1">
+                            <div className="py-1 px-2"><strong className='pe-2'>T{time_slot}</strong><i className="bi bi-arrow-right"></i></div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A1</div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A2</div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A3</div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A4</div>
+                        </div>
                     </div>
-                    <div className="block col position-relative">
-                        <div className="card py-1 px-2">A1</div>
-                    </div>
-                    <div className="block col position-relative">
-                        <div className="card py-1 px-2">A2</div>
-                    </div>
-                    <div className="block col position-relative">
-                        <div className="card py-1 px-2">A3</div>
-                    </div>
-                    <div className="block col position-relative">
-                        <div className="card py-1 px-2">A4</div>
-                    </div>
-                </div>
-            );
+                );
+            }
+            else{
+                let block_arr = [...blocks];
+                blocks.push(
+                    block_arr[block_arr.length-1]
+                );
+            }
+
+            setBlockArr([...blocks]);
             await timer(1000);
-            setBlockArr(blockArr => [...blockArr, ...blocks]);
+
+            let max_length = Math.max(c1_jobs.length, c2_jobs.length);
+            // console.log(max_length);
+
+            for (let j=0; j < max_length; j++){
+                // console.log("j: " + j);
+                // console.log("c1: " + c1_jobs.length);
+                // console.log("c2: " + c2_jobs.length);
+                // console.log();
+                blocks.pop();
+
+                blocks.push(
+                    <div className="container-block-row row gx-2 my-2 text-center align-items-center" key={uuid()}>
+                        <div className="time-slot col-1">
+                            <div className="py-1 px-2"><strong className='pe-2'>T{time_slot}</strong><i className="bi bi-arrow-right"></i></div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A1
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 1 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                            </div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A2
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 2 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                            </div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A3
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 3 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                            </div>
+                        </div>
+                        <div className="block col position-relative">
+                            <div className={`border rounded-3 py-1 px-2`}>A4
+                                {c1_jobs.length > j ? c1_jobs[j][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[j][2]}`}></i> : "" : c1_jobs[c1_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle-fill ps-2 ${c1_jobs[c1_jobs.length-1][2]}`}></i> : ""}
+                                {c2_jobs.length > j ? c2_jobs[j][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[j][2]}`}></i> : "" : c2_jobs[c2_jobs.length-1][1] === 4 ? <i className={`bi bi-c-circle ps-2 ${c2_jobs[c2_jobs.length-1][2]}`}></i> : ""}
+                            </div>
+                        </div>
+                    </div>
+                );
+
+                setBlockArr([...blocks]);
+                await timer(2000);
+            }
+            
         }
         setDisabledRun(false);
     }
@@ -64,7 +126,7 @@ const Dashboard = () => {
             </div>
             <div className="row p-0">
                 <div className="col-9 d-flex">
-                    <p className="flex-grow-1 lead my-2">Container Blocks: {schedule}</p>
+                    <p className="flex-grow-1 lead my-2">Container Blocks</p>
                     <button type='button' className="btn btn-outline-dark btn-sm my-2 mx-2">Upload<i className="bi bi-upload ps-2"></i></button>
                     <button type='button' className={`btn btn-outline-success btn-sm my-2 mx-2 ${disabledRun ? "disabled" : ""}`} onClick={handleRun}>Run<i className="bi bi-play ps-2"></i></button>
                 </div>
@@ -75,7 +137,7 @@ const Dashboard = () => {
             </div>
             <div className="row p-0">
                 <div className="col-9 visualizing-section">
-                    
+                    {blockArr}
                 </div>
                 <div className="col-3 table-section">
                     <table className="table table">
