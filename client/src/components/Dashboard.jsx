@@ -77,7 +77,7 @@ const Dashboard = () => {
             }
 
             setBlockArr([...blocks]);
-            await timer(2000);
+            await timer(1000);
 
             let max_length = Math.max(c1_jobs.length, c2_jobs.length);
             // console.log(max_length);
@@ -156,7 +156,7 @@ const Dashboard = () => {
                 );
 
                 setBlockArr([...blocks]);
-                await timer(2000);
+                await timer(1500);
             }
             
         }
